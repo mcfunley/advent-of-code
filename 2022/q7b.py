@@ -2,33 +2,6 @@
 import re
 from collections import defaultdict
 
-testdata = """$ cd /
-$ ls
-dir a
-14848514 b.txt
-8504156 c.dat
-dir d
-$ cd a
-$ ls
-dir e
-29116 f
-2557 g
-62596 h.lst
-$ cd e
-$ ls
-584 i
-$ cd ..
-$ cd ..
-$ cd d
-$ ls
-4060174 j
-8033020 d.log
-5626152 d.ext
-7214296 k"""
-
-data = open('data/q7.dat', 'r').readlines()
-# data = testdata.splitlines()
-
 sizes = defaultdict(int)
 path = None
 listing = False
@@ -36,7 +9,7 @@ listing = False
 def prefixes():
     return (''.join(path[:i+1]) for i in range(len(path)))
 
-for l in data:
+for l in open('data/q7.dat', 'r').readlines():
     if listing:
         if l.startswith('$'):
             listing = False
@@ -48,22 +21,22 @@ for l in data:
                 sizes[p] += sz
             continue
 
-    cmd, args = [x.strip() for x in re.match('\$ ([^ ]+)\s?(.*)?', l).groups()]
-    match cmd, args:
+    match [x.strip() for x in re.match('\$ ([^ ]+)\s?(.*)?', l).groups()]:
         case 'cd', '/':
             path = ['/']
         case 'cd', '..':
             path.pop()
         case 'cd', x:
             path.append(x + '/')
-        case 'ls', '':
+        case 'ls', _:
             listing = True
         case _:
             print(f'unknown command: {l}')
+
+print(sum(sz for sz in sizes.values() if sz <= 100000))
 
 total_space = 70000000
 used_space = sizes['/']
 free_goal = 30000000
 goal = free_goal - (total_space - used_space)
-print(goal)
 print(min(sz for sz in sizes.values() if sz >= goal))
