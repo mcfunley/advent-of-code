@@ -4,11 +4,12 @@ lines = open("data/p2.txt", "r").readlines()
 
 
 def is_safe(xs):
-    diffs = [x - y for x, y in zip(xs, xs[1:])]
-    if not all(abs(d) > 0 and abs(d) < 4 for d in diffs):
+    diffs = np.array([x - y for x, y in zip(xs, xs[1:])])
+    diffmag = np.abs(diffs)
+    if not np.all((diffmag > 0) & (diffmag < 4)):
         return False
 
-    if not np.all(np.equal(np.sign(diffs), np.sign(diffs[0]))):
+    if not np.all(np.sign(diffs) == np.sign(diffs[0])):
         return False
     return True
 
@@ -16,6 +17,14 @@ def is_safe(xs):
 safe = 0
 for ln in lines:
     xs = [int(x) for x in ln.split()]
-    safe += 1 if is_safe(xs) else 0
+
+    if is_safe(xs):
+        safe += 1
+        continue
+
+    for i in range(len(xs)):
+        if is_safe(xs[:i] + xs[i + 1 :]):
+            safe += 1
+            break
 
 print(safe)
