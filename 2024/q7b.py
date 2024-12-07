@@ -15,18 +15,18 @@ def concat(a, b):
 
 
 def solve(acc, result, numbers):
-    if acc > result:
+    if acc is not None and acc > result:
         return 0
     if len(numbers) == 0:
         return result if acc == result else 0
     n, *rest = numbers
     return max(
         [
-            solve(acc + n, result, rest),
-            solve(acc * n, result, rest),
-            solve(concat(acc, n), result, rest),
+            solve((acc or 0) + n, result, rest),
+            solve((acc or 1) * n, result, rest),
+            solve(concat(acc, n) if acc else n, result, rest),
         ]
     )
 
 
-print(sum(tqdm((solve(0, *eq) for eq in equations), total=len(equations))))
+print(sum(tqdm((solve(None, *eq) for eq in equations), total=len(equations))))
