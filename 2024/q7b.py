@@ -15,6 +15,8 @@ def concat(a, b):
 
 
 def solve(acc, result, numbers):
+    if acc > result:
+        return 0
     if len(numbers) == 0:
         return result if acc == result else 0
     n, *rest = numbers
