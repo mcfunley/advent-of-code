@@ -1,3 +1,5 @@
+from math import log10
+
 from tqdm import tqdm
 
 data = open("data/p7.txt", "r").readlines()
@@ -9,7 +11,7 @@ equations = [
 
 
 def concat(a, b):
-    return int(str(a) + str(b))
+    return a * (10 ** int(log10(b) + 1)) + b
 
 
 def solve(acc, result, numbers):
