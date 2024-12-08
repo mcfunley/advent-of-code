@@ -14,15 +14,12 @@ def in_bounds(pos):
 
 
 def mark_antinodes(f):
-    fs = np.where(grid == f)
-    antinodes[fs] = 1
-    coords = [np.array(c) for c in zip(*fs)]
+    coords = [np.array(c) for c in zip(*np.where(grid == f))]
     for p0, p1 in permutations(coords, 2):
-        dist = p0 - p1
         p = p0.copy()
-        while in_bounds(p + dist):
-            p += dist
+        while in_bounds(p):
             antinodes[tuple(p)] = 1
+            p += p0 - p1
 
 
 for f in frequencies:
