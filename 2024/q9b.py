@@ -1,14 +1,9 @@
-from collections import OrderedDict
-from itertools import count, groupby
+from itertools import groupby
 
 from pydantic import BaseModel
 
 s = open("data/p9.txt").read().strip()
 diskmap = [int(x) for x in s]
-
-
-def debugprint(lst):
-    print("".join(str(x) if x is not None else "." for x in lst))
 
 
 class FreeBlock(BaseModel):
