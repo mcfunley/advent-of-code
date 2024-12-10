@@ -9,16 +9,16 @@ def in_bounds(pos):
     return (pos >= 0).all() and (pos < grid.shape).all()
 
 
-def rate(acc, pos):
+def rate(pos):
     v = grid[tuple(pos)]
     if v == 9:
         return 1
     return sum(
-        rate(acc, pos + t)
+        rate(pos + t)
         for t in turns
         if in_bounds(pos + t) and grid[tuple(pos + t)] == v + 1
     )
 
 
 trailheads = zip(*np.where(grid == 0))
-print(sum(rate(0, th) for th in trailheads))
+print(sum(rate(th) for th in trailheads))
