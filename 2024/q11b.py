@@ -1,4 +1,4 @@
-from functools import lru_cache
+from functools import cache
 
 s = "4189 413 82070 61 655813 7478611 0 8"
 iterations = 75
@@ -6,7 +6,7 @@ iterations = 75
 stones = [int(x) for x in s.split()]
 
 
-@lru_cache(maxsize=1000000)
+@cache
 def count(x, it):
     if it == iterations:
         return 1
